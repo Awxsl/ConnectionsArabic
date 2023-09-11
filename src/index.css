@@ -6,4 +6,7 @@
 
 body {
     font-family: 'IBM Plex Sans Arabic', sans-serif;
+    max-width: 1440px;
+    min-height: 100%;
+    margin: 0 auto;
 }
