@@ -1,5 +1,5 @@
 function Card({children}) {
-  return <div className={`p-5 rounded-md`}>
+  return <div className='rounded-lg'>
     {children}
   </div>;
 }
