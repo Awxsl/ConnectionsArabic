@@ -1,8 +1,9 @@
 import React from "react";
 
-function Button({ onBtnClick, label, outline }) {
+function Button({ onBtnClick, label, outline, disabled }) {
   return (
     <button
+      disabled={disabled}
       onClick={onBtnClick}
       className={`text-2xl px-16 py-3 mx-2 rounded-3xl transition-all duration-500 ${
         outline
