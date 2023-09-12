@@ -1,11 +1,11 @@
 import React from "react";
 
-function SolutionGroupCard({ header, items, idx }) {
+function SolutionGroupCard({ header, items, hidden, idx }) {
   const colors = ["#f9df6d", "#a0c35a", "#b0c4ef", "#ba81c5"];
 
   return (
     <div
-      className={`w-full flex flex-col rounded-md items-center py-5 text-black`}
+      className={`w-full flex flex-col rounded-md items-center py-5 my-1 text-black ${hidden && 'hidden'}`}
       style={{backgroundColor: `${colors[idx]}`}}
     >
       <h3 className="text-4xl pb-4 font-semibold">{header}</h3>
