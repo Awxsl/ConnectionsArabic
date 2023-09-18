@@ -8,21 +8,22 @@ export const WordsProvider = ({ children }) => {
   const [wordGroups, setWordGroups] = useState([]);
   const [submittedWords, setSubmittedWords] = useState([]);
   const[selectedWords, setSelectedWords] = useState([])
-  const[loading, setLoading] = useState(true)
+  const[challengeNumber, setChallengeNumber] = useState(1)
 
   useEffect(() => {
-    const getData = async () => {
-      const response = await fetch('http://localhost:8000/api/words')
-      const {data} = await response.json()
-      let allWords = []
-      data.forEach(group => allWords = [...allWords, ...group.items])
-      setWords(shuffle(allWords))
-      setWordGroups(data)
-      setLoading(false)
-    }
-    getData()
+    getData(challengeNumber)
   }, [])
-
+  
+  const getData = async (challengeNumber) => {
+    const response = await fetch(`http://localhost:8000/api/words/${challengeNumber}`)
+    const {data} = await response.json()
+    console.log(data)
+    console.log('Request Sent')
+    let allWords = []
+    data.forEach(group => allWords = [...allWords, ...group.items])
+    setWords(shuffle(allWords))
+    setWordGroups(data)
+  }
 
   return (
     <WordsContext.Provider
@@ -34,7 +35,9 @@ export const WordsProvider = ({ children }) => {
         selectedWords,
         setSelectedWords,
         wordGroups, 
-        setWordGroups
+        setWordGroups, 
+        setChallengeNumber,
+        challengeNumber
       }}
     >
       {children}
