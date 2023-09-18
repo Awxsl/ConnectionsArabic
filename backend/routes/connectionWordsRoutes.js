@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router() 
 const wordsController = require('../controllers/connectionWordsController')
 
-const {getWords, addWords} = wordsController
+const {getAllWordGroups, getSingleWordGroup, addWordGroups} = wordsController
 
-router.get('/', getWords)
-router.post('/', addWords)
+router.get('/', getAllWordGroups)
+router.get('/:id', getSingleWordGroup)
+router.post('/', addWordGroups)
 
 module.exports = router
