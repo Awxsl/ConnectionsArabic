@@ -1,5 +1,5 @@
-function Card({children}) {
-  return <div className='rounded-lg'>
+function Card({children, className}) {
+  return <div className={`rounded-lg ${className}`}>
     {children}
   </div>;
 }
