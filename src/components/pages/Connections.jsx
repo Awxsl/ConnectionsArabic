@@ -6,6 +6,7 @@ import WordsContext from "../../context/WordsContext";
 import SolutionGroupCard from "../molecules/SolutionGroupCard";
 import { isArrayInside, getWordGroup } from "../../helper/arrayOperations";
 import { motion } from "framer-motion";
+import WordsGridOptions from "../molecules/WordsGridOptions";
 
 function Connections() {
   const {
@@ -20,58 +21,58 @@ function Connections() {
   const [numOfTries, setNumOfTries] = useState(4);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [message, setMessage] = useState("");
-  const [finished, setFinished] = useState(false);
 
   const submitWords = () => {
     const itemGroups = wordGroups.map((group) => group.items);
-    if (
-      selectedWords.length === 4 &&
-      isArrayInside(itemGroups, selectedWords)
-    ) {
-      setWords(words.filter((word) => !selectedWords.includes(word)));
-      setCorrectAnswers((prevState) => [
-        ...prevState,
-        getWordGroup(itemGroups, selectedWords),
-      ]);
-      setSelectedWords([]);
-    } else if (
-      selectedWords.length === 4 &&
-      isArrayInside(submittedWords, selectedWords)
-    ) {
-      setMessage("توقعته مسبقاً");
-    } else if (selectedWords.length === 4) {
-      setNumOfTries(numOfTries - 1);
-      setSubmittedWords((prevState) => [...prevState, selectedWords]);
-      setMessage(`${numOfTries <= 1 ? "انتهت المحاولات" : "توقع خاطئ"}`);
+    const isLengthFour = selectedWords.length === 4;
+    const isCorrectGroup = isArrayInside(itemGroups, selectedWords);
+    const isSelectedPreviously = isArrayInside(submittedWords, selectedWords);
+
+    if (isLengthFour) {
+      if (isCorrectGroup) {
+        setWords(words.filter((word) => !selectedWords.includes(word)));
+        setCorrectAnswers((prevState) => [
+          ...prevState,
+          getWordGroup(itemGroups, selectedWords),
+        ]);
+        setSelectedWords([]);
+      } else if (isSelectedPreviously) {
+        setMessage("توقعته مسبقاً");
+      } else {
+        setNumOfTries(numOfTries - 1);
+        setSubmittedWords((prevState) => [...prevState, selectedWords]);
+        setMessage(`${numOfTries <= 1 ? "انتهت المحاولات" : "توقع خاطئ"}`);
+      }
     }
+    checkStatus()
+  };
+
+  const checkStatus = () => {
     setTimeout(() => {
       setMessage("");
       if (numOfTries <= 1) {
         setCorrectAnswers([0, 1, 2, 3]);
-        setFinished(true);
       }
     }, 2000);
-  };
+  }
 
   return (
-    <div className="flex min-h-screen flex-col justify-center items-center mx-5">
-      {wordGroups.map((answer, idx) => (
+    <div className="flex h-full my-auto flex-col justify-center items-center mx-5">
+      {correctAnswers.map((num, index) => (
         <motion.div
           className="w-full"
-          key={correctAnswers.includes(idx) ? idx : 0}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0, opacity: 0 }}
         >
           <SolutionGroupCard
-            header={answer.title}
-            items={answer.items}
-            hidden={!correctAnswers.includes(idx)}
-            idx={idx}
+            header={wordGroups[num].title}
+            items={wordGroups[num].items}
+            idx={index}
           />
         </motion.div>
       ))}
-      {!finished && (
+      <WordsGridOptions />
+      {correctAnswers.length !== 4 ? (
         <>
           <WordsGrid message={message} />
           <div className="my-5 flex-col sm:flex sm:flex-row-reverse">
@@ -88,6 +89,12 @@ function Connections() {
             <RemainingTries numOfTries={numOfTries} />
           </div>
         </>
+      ) : (
+        <Button
+          label={"اعادة"}
+          className="w-1/2 mt-4"
+          onBtnClick={() => window.location.reload()}
+        />
       )}
     </div>
   );

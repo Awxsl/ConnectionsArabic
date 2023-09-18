@@ -27,4 +27,8 @@ export const isArrayInside = (arr1, arr2) => {
     } 
     return arr; 
   }; 
+
+  export const containsDuplicates = (arr) => {
+    
+  }
     
