@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import WordsGrid from "../organisms/WordsGrid";
 import Button from "../atoms/Button";
 import RemainingTries from "../molecules/RemainingTries";
@@ -17,10 +17,18 @@ function Connections() {
     setSubmittedWords,
     submittedWords,
     setWords,
+    challengeNumber
   } = useContext(WordsContext);
   const [numOfTries, setNumOfTries] = useState(4);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setNumOfTries(4)
+    setCorrectAnswers([])
+    setSelectedWords([])
+    setSubmittedWords([])
+  }, [challengeNumber])
 
   const submitWords = () => {
     const itemGroups = wordGroups.map((group) => group.items);
@@ -58,6 +66,7 @@ function Connections() {
 
   return (
     <div className="flex h-full my-auto flex-col justify-center items-center mx-5">
+      <WordsGridOptions />
       {correctAnswers.map((num, index) => (
         <motion.div
           className="w-full"
@@ -71,7 +80,6 @@ function Connections() {
           />
         </motion.div>
       ))}
-      <WordsGridOptions />
       {correctAnswers.length !== 4 ? (
         <>
           <WordsGrid message={message} />
