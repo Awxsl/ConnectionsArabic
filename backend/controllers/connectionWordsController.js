@@ -13,7 +13,8 @@ const getSingleWordGroup = async (req, res) => {
     try {
         const id = req.params.id
         const wordsArray = await Words.find({})
-        res.status(200).json({data: wordsArray[id].data})
+        const count = await Words.countDocuments({}).exec();
+        res.status(200).json({data: wordsArray[id].data, count})
     } catch (error) {
         res.status(400).json({errorMessage: error.message})
     }
