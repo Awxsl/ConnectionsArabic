@@ -5,6 +5,7 @@ const WordsContext = createContext();
 
 export const WordsProvider = ({ children }) => {
   const [words, setWords] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [wordGroups, setWordGroups] = useState([]);
   const [submittedWords, setSubmittedWords] = useState([]);
   const [selectedWords, setSelectedWords] = useState([]);
@@ -16,17 +17,16 @@ export const WordsProvider = ({ children }) => {
   }, [challengeNumber]);
 
   const getData = async (challengeNumber) => {
-    const response = await fetch(`http://localhost:8000/api/words/`);
-    const { data } = await response.json();
-    console.log(data[challengeNumber]);
-    console.log("Request Sent");
+    setLoading(true)
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+    const response = await fetch(`${BASE_URL}/api/words/${challengeNumber}`);
+    const { data, count } = await response.json();
     let allWords = [];
-    data[challengeNumber].data.forEach(
-      (group) => (allWords = [...allWords, ...group.items])
-    );
+    data.forEach((group) => (allWords = [...allWords, ...group.items]));
     setWords(shuffle(allWords));
-    setTotalChallenges(data.length);
-    setWordGroups(data[challengeNumber].data);
+    setTotalChallenges(count);
+    setWordGroups(data);
+    setLoading(false)
   };
 
   return (
@@ -43,6 +43,7 @@ export const WordsProvider = ({ children }) => {
         setChallengeNumber,
         challengeNumber,
         totalChallenges,
+        loading
       }}
     >
       {children}
