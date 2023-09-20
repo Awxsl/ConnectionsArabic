@@ -7,6 +7,7 @@ import SolutionGroupCard from "../molecules/SolutionGroupCard";
 import { isArrayInside, getWordGroup } from "../../helper/arrayOperations";
 import { motion } from "framer-motion";
 import WordsGridOptions from "../molecules/WordsGridOptions";
+import WordsGridLoading from "../organisms/WordsGridLoading";
 
 function Connections() {
   const {
@@ -17,18 +18,21 @@ function Connections() {
     setSubmittedWords,
     submittedWords,
     setWords,
-    challengeNumber
+    challengeNumber,
+    loading,
   } = useContext(WordsContext);
   const [numOfTries, setNumOfTries] = useState(4);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    setNumOfTries(4)
-    setCorrectAnswers([])
-    setSelectedWords([])
-    setSubmittedWords([])
-  }, [challengeNumber])
+    setNumOfTries(4);
+    setCorrectAnswers([]);
+    setSelectedWords([]);
+    setSubmittedWords([]);
+  }, [challengeNumber]);
+
+  console.log(loading)
 
   const submitWords = () => {
     const itemGroups = wordGroups.map((group) => group.items);
@@ -47,22 +51,25 @@ function Connections() {
       } else if (isSelectedPreviously) {
         setMessage("توقعته مسبقاً");
       } else {
-        setNumOfTries(numOfTries - 1);
+        console.log("entered else");
+        if (numOfTries - 1 < 1) {
+          setTimeout(() => {
+            setCorrectAnswers([0, 1, 2, 3]);
+          }, 2000);
+        }
         setSubmittedWords((prevState) => [...prevState, selectedWords]);
-        setMessage(`${numOfTries <= 1 ? "انتهت المحاولات" : "توقع خاطئ"}`);
+        setMessage(`${numOfTries - 1 < 1 ? "انتهت المحاولات" : "توقع خاطئ"}`);
+        setNumOfTries(numOfTries - 1);
       }
     }
-    checkStatus()
+    checkStatus();
   };
 
   const checkStatus = () => {
     setTimeout(() => {
       setMessage("");
-      if (numOfTries <= 1) {
-        setCorrectAnswers([0, 1, 2, 3]);
-      }
     }, 2000);
-  }
+  };
 
   return (
     <div className="flex h-full my-auto flex-col justify-center items-center mx-5">
@@ -82,7 +89,7 @@ function Connections() {
       ))}
       {correctAnswers.length !== 4 ? (
         <>
-          <WordsGrid message={message} />
+          {loading ? <WordsGridLoading /> : <WordsGrid message={message} />}
           <div className="my-5 flex-col sm:flex sm:flex-row-reverse">
             <Button
               outline={true}
