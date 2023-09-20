@@ -1,7 +1,7 @@
 export const postWordsToServer = async (data) => {
   try {
-    console.log(data);
-    await fetch("http://localhost:8000/api/words", {
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+    await fetch(`${BASE_URL}/api/words`, {
       method: "POST",
       body: JSON.stringify({data: data}),
       headers: { "Content-Type": "application/json" },
