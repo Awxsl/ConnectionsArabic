@@ -31,7 +31,7 @@ function WordsGridOptions() {
         title={"تحديات اخرى"}
       >
         {Array.from({ length: totalChallenges }, (_, i) => (
-          <DropdownItem title={i+1} idx={i} onClick={() => setChallengeNumber(i)}/>
+          <DropdownItem title={totalChallenges-i} idx={totalChallenges-i-1} onClick={() => setChallengeNumber(totalChallenges-i-1)}/>
         ))}
       </OptionsDropdown>
     </div>
