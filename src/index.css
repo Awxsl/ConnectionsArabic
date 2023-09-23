@@ -17,3 +17,7 @@ body {
     display: flex;
     flex-flow: column;
 }
+
+*::-webkit-scrollbar {
+    display: none;
+  }
