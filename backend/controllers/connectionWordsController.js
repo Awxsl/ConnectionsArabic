@@ -20,6 +20,16 @@ const getSingleWordGroup = async (req, res) => {
     }
 }
 
+const getNewestWord = async (req, res) => {
+    try {
+        const wordsArray = await Words.find({})
+        const count = await Words.countDocuments({}).exec();
+        res.status(200).json({data: wordsArray.pop().data, count})
+    } catch (error) {
+        res.status(400).json({errorMessage: error.message})
+    }
+}
+
 const addWordGroups = async (req, res) => {
     try {
         const words = req.body 
@@ -34,4 +44,4 @@ const addWordGroups = async (req, res) => {
     }
 }
 
-module.exports = {getAllWordGroups, getSingleWordGroup, addWordGroups}
+module.exports = {getAllWordGroups, getSingleWordGroup, addWordGroups, getNewestWord}
