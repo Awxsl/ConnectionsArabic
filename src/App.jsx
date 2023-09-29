@@ -13,9 +13,9 @@ function App() {
         <NavBar />
         <div className="container">
           <Routes>
-            {/* <Route path="/" element={<Connections />} />
-            <Route path="/addwords" element={<Addwords />} /> */}
-            <Route path="/*" element={<Maintenance />} />
+            <Route path="/" element={<Connections />} />
+            <Route path="/addwords" element={<Addwords />} />
+            {/* <Route path="/*" element={<Maintenance />} /> */}
           </Routes>
         </div>
       </Router>

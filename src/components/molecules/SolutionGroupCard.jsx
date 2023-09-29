@@ -8,7 +8,7 @@ function SolutionGroupCard({ header, items, hidden, idx }) {
       className={`w-full flex flex-col rounded-md items-center py-5 my-1 text-black ${hidden && 'hidden'}`}
       style={{backgroundColor: `${colors[idx]}`}}
     >
-      <h3 className="text-4xl pb-4 font-semibold">{header}</h3>
+      <h3 className="text-4xl pb-4 font-semibold" dir="rtl">{header}</h3>
       <div className="flex flex-row-reverse text-2xl">
         {items.map((item, i) => (
           <p className="px-1">{`${
